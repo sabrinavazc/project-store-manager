@@ -2,7 +2,7 @@ const productsServices = require('../services/products.services');
 const statusCode = require('../utils/getStatusHttp');
 
 const findAll = async (_req, res) => {
-  const allProducts = await productsServices.findAllproducts;
+  const allProducts = await productsServices.findAllproducts();
 
   res.status(statusCode(allProducts.code)).json(allProducts.data);
 };
