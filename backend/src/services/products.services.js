@@ -2,6 +2,7 @@ const productsModel = require('../models/products.models');
 
 const findAllproducts = async () => {
   const products = await productsModel.listAllProducts();
+  
   return { code: 'SUCCESS', data: products };
 };
 
