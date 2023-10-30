@@ -8,34 +8,13 @@ const statusCode = require('../../../src/utils/getStatusHttp');
 
 chai.use(sinonChai);
 
-describe('CONTROLLERS TESTS', function () {
+describe('PRODUCTS CONTROLLERS TESTS', function () {
   const mockRes = {};
         
   beforeEach(function () {
     mockRes.status = sinon.stub().returnsThis();
     mockRes.json = sinon.stub();
   });
-
-  // describe('Test the findAllproducts function', function () {
-  //   it('checks if the return is an object with all products and the status is equal to 200', async function () {
-  //     sinon.stub(productsServices, 'findAllproducts').resolves({ status: 'SUCCESSFUL', data: productsFromModel });
-      
-  //     const req = {};
-  //     const res = {
-  //       status: sinon.stub().returnsThis(),
-  //       json: sinon.stub().returnsThis(),
-  //     };
-
-  //     await productsControllers.findAll(req, res);
-
-  //     chai.expect(res.status).to.have.been.calledWith(200);
-  //     chai.expect(res.json).to.have.been.calledWith(productsFromModel);
-  //   });
-
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
-  // });
 
   describe('Test the findById function', function () {
     it('checks if the return is an object with a specific product and the status is equal to 200', async function () {
