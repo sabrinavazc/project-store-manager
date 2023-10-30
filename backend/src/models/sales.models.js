@@ -1,4 +1,4 @@
-const camelize = require('camelize');
+// const camelize = require('camelize');
 const connection = require('./connection.model');
 
 const listAllSales = async () => {
@@ -17,7 +17,8 @@ const listAllSales = async () => {
      ORDER BY 
         sale_id ASC`,
   );
-  return camelize(sales);
+  //   return camelize(sales);
+  return sales;
 };
 
 const listSalesById = async (saleId) => {
@@ -36,7 +37,8 @@ const listSalesById = async (saleId) => {
         sale_id = ?
      ORDER BY 
         sale_id ASC, product_id ASC`, [saleId]);
-  return camelize(sale);
+  //   return camelize(sale);
+  return sale;
 };
 
 module.exports = {
