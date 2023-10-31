@@ -1,4 +1,4 @@
-// const camelize = require('camelize');
+const camelcase = require('../utils/camelcase');
 const connection = require('./connection.model');
 
 const listAllSales = async () => {
@@ -17,14 +17,13 @@ const listAllSales = async () => {
      ORDER BY 
         sale_id ASC`,
   );
-  //   return camelize(sales);
-  return sales;
+  return sales.map(camelcase);
 };
 
-const listSalesById = async (saleId) => {
-  const [[sale]] = await connection.execute(`
-     SELECT
-        product_id,
+const listSalesById = async (id = undefined) => {
+  if (id) {
+    const [sale] = await connection.execute(`
+     SELECT    product_id,
         quantity,
         date
      FROM
@@ -36,9 +35,9 @@ const listSalesById = async (saleId) => {
      WHERE 
         sale_id = ?
      ORDER BY 
-        sale_id ASC, product_id ASC`, [saleId]);
-  //   return camelize(sale);
-  return sale;
+        sale_id ASC, product_id ASC`, [id]);
+    return sale.map(camelcase);
+  }
 };
 
 module.exports = {
