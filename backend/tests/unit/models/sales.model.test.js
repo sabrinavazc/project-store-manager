@@ -47,4 +47,28 @@ describe('SALES TESTS MODELS', function () {
 
     afterEach(function () { return sinon.restore(); });
   });
+
+  describe('check function createSale', function () {
+    it('check created sale', async function () {
+      sinon.stub(connection, 'execute')
+        .onCall(0)
+        .resolves([{ insertId: 1 }])
+        .onCall(1)
+        .resolves([{ affectedRows: 1 }]);
+
+      const correctSale = [
+        { 
+          productId: 1, 
+          quantity: 1, 
+        },
+      ];
+
+      const response = await salesModels.insertSale(correctSale);
+
+      chai.expect(response).to.be.an('object');
+      chai.expect(response).to.be.deep.equal({ id: 1, itemsSold: correctSale });
+    });
+
+    afterEach(function () { return sinon.restore(); });
+  });
 });

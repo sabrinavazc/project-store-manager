@@ -1,5 +1,6 @@
 const camelcase = require('../utils/camelcase');
 const connection = require('./connection.model');
+const { formattedColumnNames, formattedPlaceHolders } = require('../utils/snakize');
 
 const listAllSales = async () => {
   const [sales] = await connection.execute(
@@ -40,7 +41,30 @@ const listSalesById = async (id = undefined) => {
   }
 };
 
+const insertSale = async (sales) => {
+  const [{ insertId }] = await connection.execute(`
+   INSERT INTO sales VALUES ();
+   `);
+  const createPromisses = sales.map(async ({ productId, quantity }) => {
+    const saleProduct = { saleId: insertId, productId, quantity };
+
+    const column = formattedColumnNames(saleProduct);
+    const placeHolder = formattedPlaceHolders(saleProduct);
+    
+    const query = `
+    INSERT INTO sales_products (${column}) VALUES (${placeHolder})
+    `;
+
+    return connection.execute(query, [...Object.values(saleProduct)]);
+  });
+
+  const result = await Promise.all(createPromisses);
+  const isCreated = result.every(([{ affectedRows }]) => affectedRows === 1);
+  if (isCreated) return { id: insertId, itemsSold: sales };
+};
+
 module.exports = {
   listAllSales,
   listSalesById,
+  insertSale,
 };

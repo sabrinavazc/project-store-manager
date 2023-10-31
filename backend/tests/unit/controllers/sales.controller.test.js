@@ -46,5 +46,22 @@ describe('SALES CONTROLLERS TESTS', function () {
     afterEach(function () {
       sinon.restore();
     });
+
+    it('check controllerreturn object status 201 and data sales', async function () {
+      sinon.stub(salesServices, 'insertSale').resolves({ code: 'CREATED', data: salesFromModel });
+
+      const req = { body: [
+        {
+          productId: 1,
+          quantity: 1,
+        },
+      ] };
+   
+      await salesControllers.insertSale(req, mockRes);
+
+      chai.expect(mockRes).to.be.an('object');
+      chai.expect(mockRes.status).to.have.been.calledWith(201);
+      chai.expect(mockRes.json).to.be.calledWith(salesFromModel);
+    });
   });
 });
