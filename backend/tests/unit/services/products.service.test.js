@@ -41,4 +41,29 @@ describe('SERVICE TESTS', function () {
 
     afterEach(function () { return sinon.restore(); });
   });
+
+  it('check whether it returns the correct answer when creating a producto', async function () {
+    const productMock = {
+      id: 1,
+      name: 'Product X',
+    };
+
+    sinon.stub(productsModels, 'createProduct').resolves(productMock);
+
+    const createProductResponse = await productsServices.createProduct(productMock.name);
+
+    chai.expect(createProductResponse).to.be.deep.equal({ code: 'CREATED', data: productMock });
+  });
+
+  it('check whether the correct answer is returned when creating an unnamed product', async function () {
+    sinon.stub(productsModels, 'createProduct').resolves(undefined);
+
+    const createProductResponse = await productsServices.createProduct();
+
+    chai.expect(createProductResponse).to.be.deep.equal({
+      code: 'UNPROCESSABLE',
+      data: { message: '"name" is required' },
+    });
+  });
+  afterEach(function () { return sinon.restore(); });
 });

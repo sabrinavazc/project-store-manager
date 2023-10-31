@@ -39,9 +39,33 @@ describe('MODELS TESTS', function () {
       sinon.stub(connection, 'execute').resolves([[]]);
       const invalidId = 66;
       const response = await productsModels.listProductsById(invalidId);
-      expect(response).to.be.equal(undefined);
+      chai.expect(response).to.be.equal(undefined);
     });
 
     afterEach(function () { return sinon.restore(); });
   });
+
+  it('check whether you create a product correctly', async function () {
+    const productMock = {
+      id: 1,
+      name: 'Product X',
+    };
+
+    sinon.stub(connection, 'execute').resolves([{ insertId: 1 }]);
+    const product = await productsModels.createProduct(productMock.name);
+
+    chai.expect(product).to.be.an('object');
+    chai.expect(product).to.be.deep.equal(productMock);
+  });
+
+  it('verifica se é retorna undefined ao passar um nome inválido', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 1 }]);
+
+    const invalidName = '';
+    const response = await productsModels.createProduct(invalidName);
+
+    chai.expect(response.name).to.equal('');
+  });
+
+  afterEach(function () { return sinon.restore(); });
 });

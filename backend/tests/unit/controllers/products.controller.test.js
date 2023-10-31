@@ -54,4 +54,27 @@ describe('PRODUCTS CONTROLLERS TESTS', function () {
       sinon.restore();
     });
   });
+  it('check whether the correct answer is returned when registering a product', async function () {
+    const productMock = {
+      id: 1,
+      name: 'Product X',
+    };
+
+    sinon.stub(productsServices, 'createProduct').resolves({ code: 'CREATED', data: productMock });
+
+    const req = {
+      body: { name: productMock.name },
+    };
+
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await productsControllers.createProduct(req, res);
+
+    chai.expect(res).to.be.an('object');
+    chai.expect(res.status).to.have.been.calledWith(201);
+    chai.expect(res.json).to.have.been.calledWith(productMock);
+  });
 });
