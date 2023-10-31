@@ -16,7 +16,18 @@ const findProductsId = async (id) => {
   return { code: 'SUCCESS', data: product };
 };
 
+const createProduct = async (name) => {
+  if (!name) {
+    return { code: 'UNPROCESSABLE', data: { message: '"name" is required' } };
+  }
+
+  const product = await productsModel.createProduct(name);
+
+  return { code: 'CREATED', data: product };
+};
+
 module.exports = {
   findAllproducts,
   findProductsId,
+  createProduct,
 };
