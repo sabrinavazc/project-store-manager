@@ -44,18 +44,18 @@ describe('SALES SERVICE TESTS', function () {
     afterEach(function () { return sinon.restore(); });
   });
 
-  // describe('test function createSale', function () {
-  //   it('check return "status" and value "CREATED"', async function () {
-  //     sinon.stub(salesModels, 'insertSale').resolves(saleFromModel);
+  describe('test function createSale', function () {
+    it('check return "status" and value "CREATED"', async function () {
+      sinon.stub(salesModels, 'insertSale').resolves(saleFromModel);
 
-  //     const correctId = 1;
-  //     const response = await salesServices.insertSale(correctId);
+      const correctId = 1;
+      const response = await salesServices.insertSale(correctId);
 
-  //     chai.expect(response).to.be.an('object');
-  //     chai.expect(response).to.have.a.property('data');
-  //     chai.expect(response).to.have.a.property('code', 'CREATED');
-  //   });
+      chai.expect(response).to.be.an('object');
+      chai.expect(response).to.have.a.property('data');
+      chai.expect(response).to.have.a.property('status', 'CREATED');
+    });
 
-  //   afterEach(function () { return sinon.restore(); });
-  // });
+    afterEach(function () { return sinon.restore(); });
+  });
 });

@@ -64,4 +64,21 @@ describe('SALES CONTROLLERS TESTS', function () {
       chai.expect(mockRes.json).to.be.calledWith(salesFromModel);
     });
   });
+  it('checks if the return is an object with the key "status" and the value "BAD_REQUEST" if an invalid ID is passed', async function () {
+    sinon.stub(salesServices, 'insertSale').resolves({ code: 'BAD_REQUEST', data: { message: 'productId is required' } });
+
+    const req = { body: [
+      {
+        quantity: 1,
+      },
+    ] };
+
+    const insertSaleResponse = await salesServices.insertSale(req, mockRes);
+
+    chai.expect(insertSaleResponse).to.be.an('object');
+    chai.expect(insertSaleResponse).to.have.a.property('data');
+    chai.expect(insertSaleResponse).to.have.a.property('code', 'BAD_REQUEST');
+
+    afterEach(function () { return sinon.restore(); });
+  });
 });
