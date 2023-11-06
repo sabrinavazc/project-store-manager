@@ -1,3 +1,7 @@
-const productsMiddlewares = require('./products.middlewares');
+const validateProductName = require('./products.middlewares');
+const validateSales = require('./sales.middlewares');
 
-module.exports = productsMiddlewares;
+module.exports = {
+  validateProductName,
+  validateSales,
+};

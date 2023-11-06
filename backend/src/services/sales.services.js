@@ -18,8 +18,8 @@ const findSalesId = async (id) => {
 
 const insertSale = async (productSale) => {
   const sale = await salesModel.insertSale(productSale);
-  
-  return { code: 'CREATED', data: sale };
+
+  return { status: 'CREATED', data: sale };
 };
 
 module.exports = {

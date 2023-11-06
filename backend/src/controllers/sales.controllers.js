@@ -15,11 +15,10 @@ const findById = async (req, res) => {
 };
 
 const insertSale = async (req, res) => {
-  const saleData = req.body;
-
-  const createdSale = await salesServices.insertSale(saleData);
+  const saleProducts = req.body;
   
-  res.status(statusCode(createdSale.code)).json(createdSale.data);
+  const { status, data } = await salesServices.insertSale(saleProducts);
+  return res.status(statusCode(status)).json(data);
 };
 
 module.exports = {

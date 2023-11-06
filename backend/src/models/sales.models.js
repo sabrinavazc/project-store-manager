@@ -1,6 +1,5 @@
 const camelcase = require('../utils/camelcase');
 const connection = require('./connection.model');
-// const { getFormattedColumnNames, getFormattedPlaceHolders } = require('../utils/snakeize');
 
 const listAllSales = async () => {
   const [sales] = await connection.execute(
@@ -41,35 +40,16 @@ const listSalesById = async (id = undefined) => {
   }
 };
 
-// const insertSale = async (sales) => {
-//   const [{ insertId }] = await connection.execute(`
-//    INSERT INTO sales VALUES ();
-//    `);
-//   const createPromisses = sales.map(async ({ productId, quantity }) => {
-//     const saleProduct = { saleId: insertId, productId, quantity };
-
-//     const column = getFormattedColumnNames(saleProduct);
-//     const placeHolder = getFormattedPlaceHolders(saleProduct);
-    
-//     const query = `
-//     INSERT INTO sales_products (${column}) VALUES (${placeHolder})
-//     `;
-
-//     return connection.execute(query, [...Object.values(saleProduct)]);
-//   });
-
-//   const result = await Promise.all(createPromisses);
-//   const isCreated = result.every(([{ affectedRows }]) => affectedRows === 1);
-//   if (isCreated) return { id: insertId, itemsSold: sales };
-// };
-
 const insertSale = async (product) => {
   const [{ insertId }] = await connection.execute(
     'INSERT INTO sales () VALUES ()',
   );
   product.map(async (item) => {
     await connection.execute(
-      'INSERT INTO sales_products (product_id, sale_id, quantity) VALUES (?, ?, ?)',
+      `INSERT INTO
+       sales_products 
+       (product_id, sale_id, quantity) 
+       VALUES (?, ?, ?)`,
       [item.productId, insertId, item.quantity],
     );
   });

@@ -60,7 +60,7 @@ describe('SALES CONTROLLERS TESTS', function () {
       await salesControllers.insertSale(req, mockRes);
 
       chai.expect(mockRes).to.be.an('object');
-      chai.expect(mockRes.status).to.have.been.calledWith(201);
+      chai.expect(mockRes.status).to.have.been.calledWith(statusCode(201));
       chai.expect(mockRes.json).to.be.calledWith(salesFromModel);
     });
   });
