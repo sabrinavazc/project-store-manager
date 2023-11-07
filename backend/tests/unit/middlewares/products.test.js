@@ -1,7 +1,7 @@
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const validateProductName = require('../../../src/middlewares/products.middlewares');
+const { validateProductName, validateProductExists } = require('../../../src/middlewares/products.middlewares');
 
 chai.use(sinonChai);
 
@@ -12,7 +12,7 @@ describe('MIDDLEWARE VALIDADE PRODUCTS TEST', function () {
     mockRes.status = sinon.stub().returns(mockRes);
     mockRes.json = sinon.stub().returns();
   });
-
+ 
   describe('test middleware validateName', function () {
     it('check call middleware', function () {
       const mockReq = {
@@ -51,6 +51,23 @@ describe('MIDDLEWARE VALIDADE PRODUCTS TEST', function () {
       chai.expect(mockRes.json).to.have.been.calledWith({
         message: '"name" length must be at least 5 characters long',
       });
+    });
+  });
+  
+  describe('test middleware  validateProductExists', function () {
+    it('check called Middleware', function () {
+      const mockReq = {
+        body:
+          {
+            name: 'Martelo do Batman',
+          },
+      };
+  
+      const next = sinon.stub();
+  
+      validateProductExists(mockReq, mockRes, next);
+  
+      chai.expect(next).not.to.be.calledWith();
     });
   });
 });
