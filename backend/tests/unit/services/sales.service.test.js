@@ -58,4 +58,19 @@ describe('SALES SERVICE TESTS', function () {
 
     afterEach(function () { return sinon.restore(); });
   });
+  
+  describe('Test the deleteSale function', function () {
+    it('checks if the return', async function () {
+      const id = 1;
+      sinon.stub(salesModels, 'deleteSale').resolves();
+  
+      const deleteResponse = await salesServices.deleteSale(id);
+  
+      chai.expect(deleteResponse).to.deep.equal({
+        code: 'NO_CONTENT',
+      });
+    });
+
+    afterEach(function () { return sinon.restore(); });
+  });
 });

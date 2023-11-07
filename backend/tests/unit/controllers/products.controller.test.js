@@ -34,8 +34,20 @@ describe('PRODUCTS CONTROLLERS TESTS', function () {
       chai.expect(res.json).to.have.been.calledWith(productMock);
     });
 
+    it('check function findAll', async function () {
+      sinon.stub(productsServices, 'findAllproducts').resolves({ code: 'SUCCESSFUL', data: productsFromModel });
+      const req = {};
+
+      await productsControllers.findAll(req, mockRes);
+
+      chai.expect(mockRes).to.be.an('object');
+      // chai.expect(mockRes.status).to.be.calledWith(200);
+      chai.expect(mockRes.json).to.be.calledWith(productsFromModel);
+    });
+
     it('checks if the return is an object with the key "status" and the value "NOT_FOUND" if passed an incorrect ID', async function () {
       const id = 67;
+      
       sinon.stub(productsServices, 'findProductsId').resolves({ code: 'NOT_FOUND', data: { message: 'Product not found' } });
 
       const req = { params: { id } };
@@ -54,6 +66,7 @@ describe('PRODUCTS CONTROLLERS TESTS', function () {
       sinon.restore();
     });
   });
+  
   it('check whether the correct answer is returned when registering a product', async function () {
     const productMock = {
       id: 1,
@@ -77,25 +90,26 @@ describe('PRODUCTS CONTROLLERS TESTS', function () {
     chai.expect(res.status).to.have.been.calledWith(201);
     chai.expect(res.json).to.have.been.calledWith(productMock);
   });
+  
   it('check function deleteProduct', async function () {
-    const productMock = {
-      id: 1,
-    };
+    sinon.stub(productsServices, 'deleteProduct').resolves({ status: 'NO_CONTENT' });
+    
+    const req = { params: { id: 1 } };
 
-    sinon.stub(productsServices, 'deleteProduct').resolves({ code: 'NO_CONTENT' });
+    await productsControllers.deleteProduct(req, mockRes);
 
-    const req = {
-      body: { id: productMock.id },
-    };
+    chai.expect(mockRes).to.be.an('object');
+    chai.expect(mockRes.json).to.be.calledWith();
+  });
 
-    const res = {
-      status: sinon.stub().returnsThis(),
-      json: sinon.stub().returnsThis(),
-    };
+  it('check function updateProduct', async function () {
+    sinon.stub(productsServices, 'updateProduct').resolves({ status: 'SUCCESSFUL', data: productsFromModel });
 
-    await productsControllers.createProduct(req, res);
+    const req = { params: { id: 1 }, body: { name: 'product' } };
 
-    chai.expect(res).to.be.an('object');
-    chai.expect(res.json).to.have.been.calledWith();
+    await productsControllers.updateProduct(req, mockRes);
+
+    chai.expect(mockRes).to.be.an('object');
+    chai.expect(mockRes.json).to.be.calledWith(productsFromModel);
   });
 });

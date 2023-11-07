@@ -21,8 +21,17 @@ const insertSale = async (req, res) => {
   return res.status(statusCode(status)).json(data);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+
+  const saleDelete = await salesServices.deleteSale(id);
+  
+  res.status(statusCode(saleDelete.code)).json(saleDelete.data);
+};
+
 module.exports = {
   findAll,
   findById,
   insertSale,
+  deleteSale,
 };

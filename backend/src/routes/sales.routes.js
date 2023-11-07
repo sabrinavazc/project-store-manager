@@ -16,5 +16,6 @@ salesRoute.post(
   handleErrors, 
   salesController.insertSale,
 );
+salesRoute.delete('/:id', salesController.deleteSale);
 
 module.exports = salesRoute;

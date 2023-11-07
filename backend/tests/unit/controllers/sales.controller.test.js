@@ -78,7 +78,42 @@ describe('SALES CONTROLLERS TESTS', function () {
     chai.expect(insertSaleResponse).to.be.an('object');
     chai.expect(insertSaleResponse).to.have.a.property('data');
     chai.expect(insertSaleResponse).to.have.a.property('code', 'BAD_REQUEST');
-
     afterEach(function () { return sinon.restore(); });
+  });
+
+  it('checks if deleteSale the return is an object with the key "status" and the value "DELETE" if ID is passed', async function () {
+    const id = 1;
+    const req = { params: { id } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    sinon.stub(salesServices, 'deleteSale').resolves({
+      code: 'DELETED',
+    });
+
+    await salesControllers.deleteSale(req, res);
+
+    chai.expect(res.json).to.have.been.calledWith();
+  });
+
+  it('check if controller DeleteSale return 404 delete sale incorrect id', async function () {
+    const id = 123456;
+    const req = { params: { id } };
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    sinon.stub(salesServices, 'deleteSale').resolves({
+      code: 'NOT_FOUND',
+      data: { message: 'Sale not found' },
+    });
+
+    await salesControllers.deleteSale(req, res);
+
+    chai.expect(res.status).to.have.been.calledWith(404);
+    chai.expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
   });
 });

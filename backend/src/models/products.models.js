@@ -44,7 +44,8 @@ const deleteProduct = async (productId) => {
   await connection.execute(
     `
     DELETE FROM products 
-    WHERE id = ?`,
+    WHERE id = ?
+    `,
     [productId],
   );
 };
