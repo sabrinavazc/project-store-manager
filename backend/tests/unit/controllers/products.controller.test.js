@@ -77,4 +77,25 @@ describe('PRODUCTS CONTROLLERS TESTS', function () {
     chai.expect(res.status).to.have.been.calledWith(201);
     chai.expect(res.json).to.have.been.calledWith(productMock);
   });
+  it('check function deleteProduct', async function () {
+    const productMock = {
+      id: 1,
+    };
+
+    sinon.stub(productsServices, 'deleteProduct').resolves({ code: 'NO_CONTENT' });
+
+    const req = {
+      body: { id: productMock.id },
+    };
+
+    const res = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis(),
+    };
+
+    await productsControllers.createProduct(req, res);
+
+    chai.expect(res).to.be.an('object');
+    chai.expect(res.json).to.have.been.calledWith();
+  });
 });

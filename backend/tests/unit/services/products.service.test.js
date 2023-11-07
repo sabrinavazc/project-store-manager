@@ -66,4 +66,18 @@ describe('SERVICE TESTS', function () {
     });
   });
   afterEach(function () { return sinon.restore(); });
+
+  describe('Test the deleteProduct function', function () {
+    it('checks if the return is an object with the key "status" and the value "NO_CONTENT" if passed a correct ID', async function () {
+      const id = 1;
+      sinon.stub(productsModels, 'deleteProduct').resolves();
+  
+      const productDeleteResponse = await productsServices.deleteProduct(id);
+  
+      chai.expect(productDeleteResponse).to.be.an('object');
+      chai.expect(productDeleteResponse).to.be.deep.equal({ code: 'NO_CONTENT' });
+    });
+
+    afterEach(function () { return sinon.restore(); });
+  });
 });

@@ -58,7 +58,7 @@ describe('MODELS TESTS', function () {
     chai.expect(product).to.be.deep.equal(productMock);
   });
 
-  it('verifica se é retorna undefined ao passar um nome inválido', async function () {
+  it('check return undefined pass invalid name', async function () {
     sinon.stub(connection, 'execute').resolves([{ insertId: 1 }]);
 
     const invalidName = '';
@@ -68,4 +68,16 @@ describe('MODELS TESTS', function () {
   });
 
   afterEach(function () { return sinon.restore(); });
+  
+  describe('tests delete function', function () {
+    it('checks if possible delete product', async function () {
+      sinon.stub(connection, 'execute').resolves(productFromDB);
+      const correctId = 1;
+      const response = await productsModels.deleteProduct(correctId);
+      
+      expect(response).to.be.deep.equal(undefined);
+    });
+
+    afterEach(function () { return sinon.restore(); });
+  });
 });
