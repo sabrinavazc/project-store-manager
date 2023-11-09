@@ -5,6 +5,7 @@ const { validateProductExists } = require('../middlewares/products.middlewares')
 
 const productsRoute = Router();
 
+productsRoute.get('/search', productsController.searchProducts);
 productsRoute.get('/', productsController.findAll);
 productsRoute.get('/:id', productsController.findById);
 productsRoute.post('/', validateProductName, productsController.createProduct);

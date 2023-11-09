@@ -38,10 +38,22 @@ const deleteProduct = async (productId) => {
   return { code: 'NO_CONTENT' };
 };
 
+const searchProducts = async (q) => {
+  if (!q) {
+    const allProducts = await productsModel.listAllProducts();
+    return { code: 'SUCCESS', data: allProducts };
+  }
+
+  const products = await productsModel.searchProductsByName(q);
+
+  return { code: 'SUCCESS', data: products };
+};
+
 module.exports = {
   findAllproducts,
   findProductsId,
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProducts,
 };
