@@ -5,11 +5,38 @@ const sinonChai = require('sinon-chai');
 const connection = require('../../../src/models/connection.model');
 const salesModels = require('../../../src/models/sales.models');
 const { salesFromDB, salesFromModel } = require('../mocks/mock.sales');
+const camelcase = require('../../../src/utils/camelcase');
 
 chai.use(sinonChai);
 
 describe('SALES TESTS MODELS', function () {
   describe('listAllsales function tests', function () {
+    it('should return an array of sales for a valid ID', async function () {
+      const validId = 1;
+      const expectedResult = [
+        {
+          productId: 123,
+          quantity: 2,
+          date: '2023-01-01',
+        },
+      ];
+
+      sinon.stub(connection, 'execute').resolves([expectedResult]);
+
+      const result = await salesModels.listSalesById(validId);
+
+      expect(result).to.be.an('array');
+      expect(result).to.deep.equal(expectedResult.map(camelcase));
+    });
+    
+    it('should return an empty array for an invalid ID', async function () {
+      sinon.stub(connection, 'execute').resolves(salesFromDB);
+      
+      const invalidId = 66;
+      const responseInvalidId = await salesModels.listSalesById(invalidId);
+      expect(responseInvalidId).to.be.an('array');
+    });
+
     it('checks if an array with all sales is returned', async function () {
       sinon.stub(connection, 'execute').resolves(salesFromDB);
 

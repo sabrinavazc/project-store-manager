@@ -107,4 +107,41 @@ describe('MIDDLEWARE VALIDADE SALES TEST', function () {
     chai.expect(mockRes.status).to.have.been.calledWith(422);
     chai.expect(mockRes.json).to.be.calledWith({ message: '"quantity" must be greater than or equal to 1' });
   });
+  
+  describe('test middleware validateQuantity', function () {
+    it('check return status 400 and message error "quantity" is required', function () {
+      const mockReq = {
+        body: [
+          {
+            productId: 1,
+          },
+        ],
+      };
+
+      const next = sinon.stub();
+
+      validateQuantity(mockReq, mockRes, next);
+
+      chai.expect(mockRes.status).to.have.been.calledWith(400);
+      chai.expect(mockRes.json).to.be.calledWith({ message: '"quantity" is required' });
+    });
+
+    it('check return status 422 and message error when quantity is less than or equal to 0', function () {
+      const mockReq = {
+        body: [
+          {
+            productId: 1,
+            quantity: 0,
+          },
+        ],
+      };
+
+      const next = sinon.stub();
+
+      validateQuantity(mockReq, mockRes, next);
+
+      chai.expect(mockRes.status).to.have.been.calledWith(422);
+      chai.expect(mockRes.json).to.be.calledWith({ message: '"quantity" must be greater than or equal to 1' });
+    });
+  });
 });

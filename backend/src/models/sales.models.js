@@ -17,6 +17,7 @@ const listAllSales = async () => {
      ORDER BY 
         sale_id ASC`,
   );
+  
   return sales.map(camelcase);
 };
 
@@ -36,6 +37,7 @@ const listSalesById = async (id = undefined) => {
         sale_id = ?
      ORDER BY 
         sale_id ASC, product_id ASC`, [id]);
+    
     return sale.map(camelcase);
   }
 };
@@ -46,10 +48,12 @@ const insertSale = async (product) => {
   );
   product.map(async (item) => {
     await connection.execute(
-      `INSERT INTO
+      `
+      INSERT INTO
        sales_products 
        (product_id, sale_id, quantity) 
-       VALUES (?, ?, ?)`,
+       VALUES (?, ?, ?)
+       `,
       [item.productId, insertId, item.quantity],
     );
   });

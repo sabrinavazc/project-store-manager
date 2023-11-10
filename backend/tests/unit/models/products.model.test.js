@@ -26,6 +26,25 @@ describe('MODELS TESTS', function () {
     afterEach(function () { return sinon.restore(); });
   });
 
+  describe('tests updateProduct function', function () {
+    it('checks if updateProduct correctly updates the product', async function () {
+      const productId = 1;
+      const newName = 'Updated Product';
+
+      const updateProductStub = sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+
+      const response = await productsModels.updateProduct(productId, newName);
+
+      chai.expect(response).to.be.an('object');
+      chai.expect(response).to.be.deep.equal({ id: productId, name: newName });
+
+      chai.expect(updateProductStub).to.have.been.calledOnceWithExactly(
+        sinon.match.string,
+        [newName, productId],
+      );
+    });
+  });
+
   describe('tests the findProductsById function', function () {
     it('checks if an object with the correct product is returned when passing a valid ID', async function () {
       sinon.stub(connection, 'execute').resolves(productFromDB);

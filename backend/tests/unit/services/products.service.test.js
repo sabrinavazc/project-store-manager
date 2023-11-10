@@ -90,5 +90,24 @@ describe('SERVICE TESTS', function () {
     });
 
     afterEach(function () { return sinon.restore(); });
+
+    describe('Test the searchProducts function', function () {
+      it('checks if the return is an object with the key "status" and the value "SUCCESS" when a search query is provided', async function () {
+        const searchQuery = 'Product';
+        sinon.stub(productsModels, 'searchProductsByName').resolves([{ id: 1, name: 'Product X' }]);
+    
+        const searchProductsResponse = await productsServices.searchProducts(searchQuery);
+    
+        chai.expect(searchProductsResponse).to.be.deep.equal({ code: 'SUCCESS', data: [{ id: 1, name: 'Product X' }] });
+      });
+    
+      it('checks if the return is an object with the key "status" and the value "SUCCESS" when no search query is provided', async function () {
+        sinon.stub(productsModels, 'listAllProducts').resolves(productsFromModel);
+    
+        const searchProductsResponse = await productsServices.searchProducts();
+    
+        chai.expect(searchProductsResponse).to.be.deep.equal({ code: 'SUCCESS', data: productsFromModel });
+      });
+    });    
   });
 });
