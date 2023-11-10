@@ -51,7 +51,7 @@ describe('SALES TESTS MODELS', function () {
 
     afterEach(function () { return sinon.restore(); });
   });
-
+  
   describe('check function createSale', function () {
     it('check created sale', async function () {
       sinon.stub(connection, 'execute')

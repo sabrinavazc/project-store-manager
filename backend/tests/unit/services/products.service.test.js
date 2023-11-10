@@ -16,6 +16,7 @@ describe('SERVICE TESTS', function () {
 
       chai.expect(response).to.be.deep.equal({ code: 'SUCCESS', data: productsFromModel });
     });
+    
     afterEach(function () { return sinon.restore(); });
   });
 
@@ -76,6 +77,16 @@ describe('SERVICE TESTS', function () {
   
       chai.expect(productDeleteResponse).to.be.an('object');
       chai.expect(productDeleteResponse).to.be.deep.equal({ code: 'NO_CONTENT' });
+    });
+
+    it('checks if the return error or delete inexistent product', async function () {
+      const id = 1111;
+      sinon.stub(productsModels, 'listProductsById').resolves([]);
+      sinon.stub(productsModels, 'deleteProduct').resolves(new Error());
+  
+      const productDeleteResponse = await productsServices.deleteProduct(id);
+  
+      chai.expect(productDeleteResponse.status).to.equal(undefined);
     });
 
     afterEach(function () { return sinon.restore(); });

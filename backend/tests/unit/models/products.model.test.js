@@ -80,4 +80,16 @@ describe('MODELS TESTS', function () {
 
     afterEach(function () { return sinon.restore(); });
   });
+
+  describe('tests search function', function () {
+    it('checks if possible search product for name', async function () {
+      sinon.stub(connection, 'execute').resolves(productFromDB);
+      const name = 'martelo';
+      const response = await productsModels.searchProductsByName(name);
+      
+      expect(response).to.be.deep.equal([{ id: 1, name: 'Martelo do Thor' }]);
+    });
+
+    afterEach(function () { return sinon.restore(); });
+  });
 });
